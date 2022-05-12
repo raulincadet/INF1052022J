@@ -1,0 +1,47 @@
+#################################################
+#################################################
+################################################
+#####Devoir Tp sur les statistiques
+
+#####Preparer par D.John Pascal Belande Be172850
+
+
+#####Importation des données du fichier cvs
+jp<-read.csv("CreditBancaire.csv")   
+###jp, un data frame contenant les données du fichier cvs credit bancaire
+
+
+#####Exploration du data frame jp
+str(jp)
+
+
+######Calcul de la moyenne credit
+mean(jp$Credit)
+###La moyenne du credit est égale à 779309.5
+
+#####Affichage des differents types de credit et de leur frequence
+table(jp$Type)
+###Il existe donc 3 types de credit, les credits de production, de consomation et de commerce
+
+
+#####Calcul de la moyenne jours de retard de paiement des clients
+mean(jp$Jours)
+###Les clients paient avec une moyenne de retard de 77.53061 jours
+
+
+#####Calcul de la moyenne des jours de retard de paiment par type de credit
+attach(jp)
+tapply(Jours,Type,mean)
+
+
+#####Creation d'un objet pour la moyenne des jours de retard de paiement par type de credit
+x<-tapply(Jours,Type,mean)  
+x
+
+
+#####Creation d'un diagrame en baton indiquant la moyenne du nombre de jours de retard de paiement par type de credit
+barplot(x) 
+
+
+#####Nomenclature du diagrame en baton
+barplot(x,main="Jours de retard par type de credit")
