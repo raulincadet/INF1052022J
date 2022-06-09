@@ -1,27 +1,27 @@
 {
-    "id": "0E7140EC",
-    "path": "~/Raul/GitHub/INF1052022J/regression.R",
-    "project_path": "regression.R",
+    "id": "C0E85A67",
+    "path": "~/Raul/GitHub/INF1052022J/Regression_testStat_ggplot2.R",
+    "project_path": "Regression_testStat_ggplot2.R",
     "type": "r_source",
-    "hash": "0",
+    "hash": "300191290",
     "contents": "",
     "dirty": false,
-    "created": 1654137163156.0,
+    "created": 1654172309636.0,
     "source_on_save": false,
     "relative_order": 1,
     "properties": {
         "tempName": "Untitled1",
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "165,3",
-        "scrollLine": "164"
+        "cursorPosition": "178,0",
+        "scrollLine": "166"
     },
     "folds": "",
-    "lastKnownWriteTime": 1654139780,
+    "lastKnownWriteTime": 1654179148,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1654139780097,
+    "last_content_update": 1654179149622,
     "read_only": false,
     "read_only_alternatives": []
 }

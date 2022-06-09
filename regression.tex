@@ -1,0 +1,624 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\title{regression.R}
+\author{Diaraye}
+\date{2022-06-02}
+
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={regression.R},
+  pdfauthor={Diaraye},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\begin{document}
+\maketitle
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(dplyr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'dplyr'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\#\#\#\#\#\# Regression lineaire   \#\#\#\#\#\#\#\#\#\#\#\#\#}
+\NormalTok{cre}\OtherTok{\textless{}{-}}\FunctionTok{read.csv}\NormalTok{(}\StringTok{"CreditBancaire.csv"}\NormalTok{)}
+
+\DocumentationTok{\#\#\#\#\#\#\#\#\#\#}
+\NormalTok{reg\_1}\OtherTok{\textless{}{-}}\FunctionTok{lm}\NormalTok{(}\AttributeTok{data =}\NormalTok{ cre,Jours}\SpecialCharTok{\textasciitilde{}}\NormalTok{Credit}\SpecialCharTok{+}\NormalTok{Type)}
+
+\NormalTok{reg\_1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = Jours ~ Credit + Type, data = cre)
+## 
+## Coefficients:
+##      (Intercept)            Credit  TypeConsommation    TypeProduction  
+##        8.519e+01        -5.484e-06        -1.486e+01         1.498e+01
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{reg\_resum}\OtherTok{\textless{}{-}}\FunctionTok{summary}\NormalTok{(reg\_1)}
+
+\NormalTok{reg\_resum  }\CommentTok{\# les resultats detailles}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = Jours ~ Credit + Type, data = cre)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -96.26 -69.22 -49.06  17.29 270.22 
+## 
+## Coefficients:
+##                    Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)       8.519e+01  1.275e+01   6.681 1.63e-10 ***
+## Credit           -5.484e-06  1.182e-05  -0.464    0.643    
+## TypeConsommation -1.486e+01  1.472e+01  -1.009    0.314    
+## TypeProduction    1.498e+01  2.532e+01   0.591    0.555    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 104 on 241 degrees of freedom
+## Multiple R-squared:  0.007512,   Adjusted R-squared:  -0.004842 
+## F-statistic: 0.608 on 3 and 241 DF,  p-value: 0.6104
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# afficher que le tableau des coefficients}
+\NormalTok{reg\_resum}\SpecialCharTok{$}\NormalTok{coefficients}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                       Estimate   Std. Error    t value     Pr(>|t|)
+## (Intercept)       8.519082e+01 1.275135e+01  6.6809256 1.630050e-10
+## Credit           -5.483559e-06 1.182460e-05 -0.4637417 6.432514e-01
+## TypeConsommation -1.485726e+01 1.472339e+01 -1.0090929 3.139421e-01
+## TypeProduction    1.497503e+01 2.532278e+01  0.5913659 5.548295e-01
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# coefficients et t student}
+\NormalTok{reg\_resum}\SpecialCharTok{$}\NormalTok{coefficients[,}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{)]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                       Estimate    t value
+## (Intercept)       8.519082e+01  6.6809256
+## Credit           -5.483559e-06 -0.4637417
+## TypeConsommation -1.485726e+01 -1.0090929
+## TypeProduction    1.497503e+01  0.5913659
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\#\#\#\#\#\# une fonction pour fournir que coeff et t student \#\#\#\#\#\#\#\#\#\#33}
+\NormalTok{result}\OtherTok{\textless{}{-}}\ControlFlowTok{function}\NormalTok{(y,x,data)\{}
+\NormalTok{  reg}\OtherTok{=}\FunctionTok{lm}\NormalTok{(data[,y]}\SpecialCharTok{\textasciitilde{}}\NormalTok{data[,x])}
+\NormalTok{  reg\_details}\OtherTok{\textless{}{-}}\FunctionTok{summary}\NormalTok{(reg)}
+\NormalTok{  reg\_details}\SpecialCharTok{$}\NormalTok{coef[,}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{)]}
+\NormalTok{\}}
+
+
+\CommentTok{\# verifier si la fonction marche}
+\FunctionTok{result}\NormalTok{(}\StringTok{\textquotesingle{}Jours\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}Credit\textquotesingle{}}\NormalTok{,}\AttributeTok{data=}\NormalTok{cre)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                  Estimate    t value
+## (Intercept)  8.124861e+01  7.1661463
+## data[, x]   -4.770881e-06 -0.4045829
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# moyenne de jours par type de credit}
+\NormalTok{cre}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(Type)}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{Moyenne\_jours=}\FunctionTok{mean}\NormalTok{(Credit))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 3 x 2
+##   Type         Moyenne_jours
+##   <chr>                <dbl>
+## 1 Commerce           806521.
+## 2 Consommation       727061.
+## 3 Production         769295.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Tests de difference de la moyenne}
+\CommentTok{\# verifions si cons=769294 qui est la moyenne du credit en production}
+\NormalTok{cons}\OtherTok{\textless{}{-}}\NormalTok{cre}\SpecialCharTok{\%\textgreater{}\%}\FunctionTok{filter}\NormalTok{(Type}\SpecialCharTok{==}\StringTok{\textquotesingle{}Consommation\textquotesingle{}}\NormalTok{)}\SpecialCharTok{\%\textgreater{}\%}\FunctionTok{select}\NormalTok{(Credit)}
+\NormalTok{prod}\OtherTok{\textless{}{-}}\NormalTok{cre}\SpecialCharTok{\%\textgreater{}\%}\FunctionTok{filter}\NormalTok{(Type}\SpecialCharTok{==}\StringTok{\textquotesingle{}Production\textquotesingle{}}\NormalTok{)}\SpecialCharTok{\%\textgreater{}\%}\FunctionTok{select}\NormalTok{(Credit)}
+\FunctionTok{t.test}\NormalTok{(cons,}\AttributeTok{mu=}\DecValTok{769294}\NormalTok{,}\AttributeTok{alternative =} \StringTok{"two.sided"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  One Sample t-test
+## 
+## data:  cons
+## t = -0.64345, df = 74, p-value = 0.5219
+## alternative hypothesis: true mean is not equal to 769294
+## 95 percent confidence interval:
+##  596281.5 857841.4
+## sample estimates:
+## mean of x 
+##  727061.4
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#pvalue is = 0.52, than superieur a 0.05 nous acceptons l\textquotesingle{}hypothese nulle}
+\CommentTok{\# que cons=769294}
+
+
+\CommentTok{\# verifions si le credit moyen cons est inferieur a production}
+\FunctionTok{t.test}\NormalTok{(cons,prod,}\AttributeTok{alternative =} \StringTok{"less"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Welch Two Sample t-test
+## 
+## data:  cons and prod
+## t = -0.26354, df = 25.733, p-value = 0.3971
+## alternative hypothesis: true difference in means is less than 0
+## 95 percent confidence interval:
+##    -Inf 231202
+## sample estimates:
+## mean of x mean of y 
+##  727061.4  769294.8
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# puisque pvalue superieur a 0.05 on accepte l\textquotesingle{}hypothese nuelle}
+\CommentTok{\# que cons est sup ou egal a prod}
+
+
+
+
+\CommentTok{\# verifions si cons est superieur a prod}
+\FunctionTok{t.test}\NormalTok{(cons,prod,}\AttributeTok{alternative =} \StringTok{\textquotesingle{}greater\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Welch Two Sample t-test
+## 
+## data:  cons and prod
+## t = -0.26354, df = 25.733, p-value = 0.6029
+## alternative hypothesis: true difference in means is greater than 0
+## 95 percent confidence interval:
+##  -315668.8       Inf
+## sample estimates:
+## mean of x mean of y 
+##  727061.4  769294.8
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#pval=0.6. Donc on accepte H0 que cons est inferieur ou eegal a:}
+
+
+\CommentTok{\# verifions si cons est egal a prod}
+\FunctionTok{t.test}\NormalTok{(cons, prod,}\AttributeTok{alternative =} \StringTok{\textquotesingle{}two.sided\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Welch Two Sample t-test
+## 
+## data:  cons and prod
+## t = -0.26354, df = 25.733, p-value = 0.7942
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -371804.9  287338.1
+## sample estimates:
+## mean of x mean of y 
+##  727061.4  769294.8
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#pvalue=0.79 est superieur a 0.05. Donc, on accepte l\textquotesingle{}hypothese nulle}
+\CommentTok{\# que cons = prod.}
+
+
+
+\DocumentationTok{\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#}
+\DocumentationTok{\#\#\#\# GGPLOT2 \#\#\#\#\#\#\#\#\#}
+\DocumentationTok{\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#}
+
+\CommentTok{\# nuage de point}
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{cre,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Jours,}\AttributeTok{y=}\NormalTok{Credit))}\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{regression_files/figure-latex/unnamed-chunk-1-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\#\#}
+\CommentTok{\# size of points}
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{cre,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Jours,}\AttributeTok{y=}\NormalTok{Credit,}\AttributeTok{color=}\StringTok{\textquotesingle{}red\textquotesingle{}}\NormalTok{))}\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size=}\FloatTok{2.5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{regression_files/figure-latex/unnamed-chunk-1-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\#}
+\CommentTok{\# shape}
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{cre,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Jours,}\AttributeTok{y=}\NormalTok{Credit,}\AttributeTok{color=}\StringTok{\textquotesingle{}red\textquotesingle{}}\NormalTok{))}\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size=}\FloatTok{2.5}\NormalTok{,}\AttributeTok{shape=}\DecValTok{6}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{regression_files/figure-latex/unnamed-chunk-1-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# find help on shape}
+\FunctionTok{help}\NormalTok{(shape,}\StringTok{"ggplot2"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## starting httpd help server ...
+\end{verbatim}
+
+\begin{verbatim}
+##  done
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\#}
+\CommentTok{\#theme}
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{cre,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Jours,}\AttributeTok{y=}\NormalTok{Credit,}\AttributeTok{color=}\StringTok{\textquotesingle{}red\textquotesingle{}}\NormalTok{))}\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size=}\FloatTok{2.5}\NormalTok{,}\AttributeTok{shape=}\DecValTok{1}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{theme\_bw}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{regression_files/figure-latex/unnamed-chunk-1-4.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\# theme classic}
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{cre,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Jours,}\AttributeTok{y=}\NormalTok{Credit,}\AttributeTok{color=}\StringTok{\textquotesingle{}red\textquotesingle{}}\NormalTok{))}\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size=}\FloatTok{2.5}\NormalTok{,}\AttributeTok{shape=}\DecValTok{1}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{theme\_classic}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{regression_files/figure-latex/unnamed-chunk-1-5.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\# change axis title}
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{cre,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Jours,}\AttributeTok{y=}\NormalTok{Credit,}\AttributeTok{color=}\StringTok{\textquotesingle{}red\textquotesingle{}}\NormalTok{))}\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size=}\FloatTok{2.5}\NormalTok{,}\AttributeTok{shape=}\DecValTok{1}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{xlab}\NormalTok{(}\StringTok{"Nombre de jours"}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{theme\_classic}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{regression_files/figure-latex/unnamed-chunk-1-6.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\#\# ajouter une tendance}
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{cre,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Jours,}\AttributeTok{y=}\NormalTok{Credit,}\AttributeTok{color=}\StringTok{\textquotesingle{}red\textquotesingle{}}\NormalTok{))}\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size=}\FloatTok{2.5}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{geom\_smooth}\NormalTok{(}\AttributeTok{color=}\StringTok{\textquotesingle{}black\textquotesingle{}}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{xlab}\NormalTok{(}\StringTok{"Nombre de jours"}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{theme\_classic}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+\end{verbatim}
+
+\includegraphics{regression_files/figure-latex/unnamed-chunk-1-7.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\#\# enlever la partie achuree et le theme}
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{cre,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Jours,}\AttributeTok{y=}\NormalTok{Credit,}\AttributeTok{color=}\StringTok{\textquotesingle{}red\textquotesingle{}}\NormalTok{))}\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size=}\FloatTok{2.5}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{geom\_smooth}\NormalTok{(}\AttributeTok{color=}\StringTok{\textquotesingle{}black\textquotesingle{}}\NormalTok{,}\AttributeTok{se=}\ConstantTok{FALSE}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{xlab}\NormalTok{(}\StringTok{"Nombre de jours"}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{theme\_light}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+\end{verbatim}
+
+\includegraphics{regression_files/figure-latex/unnamed-chunk-1-8.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#}
+\DocumentationTok{\#\#\#\#Geom\_bar  \#\#\#\#\#\#\#\#}
+\NormalTok{tsecteur}\OtherTok{\textless{}{-}}\FunctionTok{prop.table}\NormalTok{(}\FunctionTok{table}\NormalTok{(cre}\SpecialCharTok{$}\NormalTok{Type))}
+\NormalTok{tsecteur}\OtherTok{=}\FunctionTok{data.frame}\NormalTok{(tsecteur)}
+\NormalTok{tsecteur}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##           Var1       Freq
+## 1     Commerce 0.61632653
+## 2 Consommation 0.30612245
+## 3   Production 0.07755102
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\#\#}
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{tsecteur,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Var1,}\AttributeTok{y=}\NormalTok{Freq))}\SpecialCharTok{+}
+  \FunctionTok{geom\_bar}\NormalTok{(}\AttributeTok{stat =} \StringTok{\textquotesingle{}identity\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{regression_files/figure-latex/unnamed-chunk-1-9.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\#\#\# remplir les batons de la couleur rouge}
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{tsecteur,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Var1,}\AttributeTok{y=}\NormalTok{Freq,}\AttributeTok{fill=}\StringTok{\textquotesingle{}red\textquotesingle{}}\NormalTok{))}\SpecialCharTok{+}
+  \FunctionTok{geom\_bar}\NormalTok{(}\AttributeTok{stat =} \StringTok{\textquotesingle{}identity\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{regression_files/figure-latex/unnamed-chunk-1-10.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\# changer noms des axes}
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{tsecteur,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Var1,}\AttributeTok{y=}\NormalTok{Freq,}\AttributeTok{fill=}\StringTok{\textquotesingle{}red\textquotesingle{}}\NormalTok{))}\SpecialCharTok{+}
+  \FunctionTok{geom\_bar}\NormalTok{(}\AttributeTok{stat =} \StringTok{\textquotesingle{}identity\textquotesingle{}}\NormalTok{)}\SpecialCharTok{+}\FunctionTok{xlab}\NormalTok{(}\StringTok{"Secteurs"}\NormalTok{)}\SpecialCharTok{+}\FunctionTok{ylab}\NormalTok{(}\StringTok{\textquotesingle{}Proportion\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{regression_files/figure-latex/unnamed-chunk-1-11.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\#\#  A vous de jouer}
+
+
+\DocumentationTok{\#\#\#\# Graphique en nuage de points avec des groupes}
+
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{cre,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Jours,}\AttributeTok{y=}\NormalTok{Credit,}\AttributeTok{color=}\NormalTok{Type))}\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{()}\SpecialCharTok{+}
+  \FunctionTok{theme\_light}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{regression_files/figure-latex/unnamed-chunk-1-12.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\#\# modifier la taille des points avec size }
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{cre,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Jours,}\AttributeTok{y=}\NormalTok{Credit,}\AttributeTok{color=}\NormalTok{Type))}\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size=}\DecValTok{3}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{theme\_light}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{regression_files/figure-latex/unnamed-chunk-1-13.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\#\# ajouter une tendance}
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{cre,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Jours,}\AttributeTok{y=}\NormalTok{Credit,}\AttributeTok{color=}\NormalTok{Type))}\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{()}\SpecialCharTok{+}
+  \FunctionTok{geom\_smooth}\NormalTok{()}\SpecialCharTok{+}
+  \FunctionTok{theme\_light}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+\end{verbatim}
+
+\includegraphics{regression_files/figure-latex/unnamed-chunk-1-14.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\# enlever la partie achuree}
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{cre,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Jours,}\AttributeTok{y=}\NormalTok{Credit,}\AttributeTok{color=}\NormalTok{Type))}\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{()}\SpecialCharTok{+}
+  \FunctionTok{geom\_smooth}\NormalTok{(}\AttributeTok{se=}\NormalTok{F)}\SpecialCharTok{+}
+  \FunctionTok{theme\_light}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+\end{verbatim}
+
+\includegraphics{regression_files/figure-latex/unnamed-chunk-1-15.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#}
+\DocumentationTok{\#\#\# graphique en ligne}
+
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{cre,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Jours,}\AttributeTok{y=}\NormalTok{Credit))}\SpecialCharTok{+}
+  \FunctionTok{geom\_line}\NormalTok{()}\SpecialCharTok{+}
+  \FunctionTok{theme\_classic}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{regression_files/figure-latex/unnamed-chunk-1-16.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\# change line color}
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{cre,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Jours,}\AttributeTok{y=}\NormalTok{Credit))}\SpecialCharTok{+}
+  \FunctionTok{geom\_line}\NormalTok{(}\AttributeTok{col=}\StringTok{\textquotesingle{}navy\textquotesingle{}}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{theme\_classic}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{regression_files/figure-latex/unnamed-chunk-1-17.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\#\#\#\#}
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ cre,}\FunctionTok{aes}\NormalTok{(Jours))}\SpecialCharTok{+}
+  \FunctionTok{geom\_histogram}\NormalTok{(}\AttributeTok{bins=}\DecValTok{10}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{theme\_light}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{regression_files/figure-latex/unnamed-chunk-1-18.pdf}
+
+\end{document}
